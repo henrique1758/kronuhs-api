@@ -15,15 +15,49 @@ model User {
   email     String @unique
   password  String
 
-  posts            Post[]
-  comments         Comment[]
-  user_permissions User_Permission[]
-  user_roles User_Role[]
+  posts    Post[]
+  comments Comment[]
+  likes    Like[]
+  roles     Role[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@map("users")
+}
+
+model Role {
+  id String @id @default(uuid())
+
+  name String @unique
+
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  createdAt DateTime @default(now())
+
+  @@map("roles")
+}
+
+model Post {
+  id String @id @default(uuid())
+
+  title    String
+  subtitle String
+  content  String
+
+  comments Comment[]
+  likes    Like[]
+
+  category   Category? @relation(fields: [categoryId], references: [id])
+  categoryId String?
+
+  author   User?   @relation(fields: [authorId], references: [id])
+  authorId String?
+
+  createdAt DateTime @default(now())
+
+  @@map("posts")
 }
 
 model Category {
@@ -36,26 +70,6 @@ model Category {
   createdAt DateTime @default(now())
 
   @@map("categories")
-}
-
-model Post {
-  id String @id @default(uuid())
-
-  title    String
-  subtitle String
-  content  String
-
-  comments Comment[]
-
-  category   Category? @relation(fields: [categoryId], references: [id])
-  categoryId String?
-
-  author   User?   @relation(fields: [authorId], references: [id])
-  authorId String?
-
-  createdAt DateTime @default(now())
-
-  @@map("posts")
 }
 
 model Comment {
@@ -74,66 +88,16 @@ model Comment {
   @@map("comments")
 }
 
-model Permission {
+model Like {
   id String @id @default(uuid())
-
-  name String @unique
-
-  permissions_roles Permission_Role[]
-
-  createdAt DateTime @default(now())
-
-  user_permissions User_Permission[]
-
-  @@map("permissions")
-}
-
-model Role {
-  id String @id @default(uuid())
-
-  name String @unique
-
-  permissions_roles Permission_Role[]
-
-  createdAt DateTime @default(now())
-
-  user_roles User_Role[]
-
-  @@map("roles")
-}
-
-model Permission_Role {
-  id String @id @default(uuid())
-
-  permission   Permission? @relation(fields: [permissionId], references: [id])
-  permissionId String?
-
-  role   Role?   @relation(fields: [roleId], references: [id])
-  roleId String?
-
-  @@map("permissions_roles")
-}
-
-model User_Permission {
-  id String @id @default(uuid())
-
-  permission   Permission? @relation(fields: [permissionId], references: [id])
-  permissionId String?
 
   user   User?   @relation(fields: [userId], references: [id])
   userId String?
 
-  @@map("user_permissions")
-}
+  post   Post?   @relation(fields: [postId], references: [id])
+  postId String?
 
-model User_Role {
-  id String @id @default(uuid())
+  createdAt DateTime @default(now())
 
-  role   Role?   @relation(fields: [roleId], references: [id])
-  roleId String?
-
-  user   User?   @relation(fields: [userId], references: [id])
-  userId String?
-
-  @@map("user_roles")
+  @@map("likes")
 }

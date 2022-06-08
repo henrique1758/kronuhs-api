@@ -1,7 +1,8 @@
-import { inject } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 import { AppError } from "../../../../errors/AppError";
 import { IRolesRepository } from "../../../../repositories/roles/IRolesRepository";
 
+@injectable()
 class CreateRoleUseCase {
   constructor(
     @inject("PrismaRolesRepository")
@@ -13,9 +14,9 @@ class CreateRoleUseCase {
       throw new AppError("name is required!");
     }
 
-    const roleAlreadyExists = await this.rolesRepository.findByName(name);
+    const roleExists = await this.rolesRepository.findByName(name);
 
-    if (roleAlreadyExists) {
+    if (roleExists) {
       throw new AppError("Role already exists!");
     }
 

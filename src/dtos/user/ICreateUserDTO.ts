@@ -3,6 +3,8 @@ interface ICreateUserDTO {
   lastName: string;
   email: string;
   password: string;
+  roleId: string;
 }
 
 export { ICreateUserDTO };
+

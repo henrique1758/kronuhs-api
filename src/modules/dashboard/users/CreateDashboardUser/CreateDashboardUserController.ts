@@ -4,7 +4,7 @@ import { CreateDashboardUserUseCase } from "./CreateDashboardUserUseCase";
 
 class CreateDashboardUserController {
   async handle(req:Request, res:Response) {
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, password, roleId } = req.body;
 
     const createDashboardUserUseCase = container.resolve(CreateDashboardUserUseCase);
 
@@ -12,7 +12,8 @@ class CreateDashboardUserController {
       firstName,
       lastName,
       email,
-      password
+      password,
+      roleId
     });
 
     return res.status(201).json({ message: "User Created Successfuly!" });

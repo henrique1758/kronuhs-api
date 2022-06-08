@@ -8,6 +8,7 @@ interface IRequest {
   lastName: string;
   email: string;
   password: string;
+  roleId: string;
 }
 
 @injectable()
@@ -17,7 +18,7 @@ class CreateDashboardUserUseCase {
     private usersRepository: IUsersRepository
   ) {}
 
-  async execute({ firstName, lastName, email, password }: IRequest): Promise<void> {
+  async execute({ firstName, lastName, email, password, roleId }: IRequest): Promise<void> {
     if (!firstName) {
       throw new AppError("First Name is required!", 400);
     }
@@ -42,11 +43,12 @@ class CreateDashboardUserUseCase {
 
     const passwordHash = await hash(password, 8);
 
-    await this.usersRepository.create({ 
+    const user = await this.usersRepository.create({ 
       firstName, 
       lastName,
       email, 
-      password: passwordHash
+      password: passwordHash,
+      roleId
     });
   }
 }

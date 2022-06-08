@@ -11,6 +11,12 @@ class PrismaCategoriesRepository implements ICategoriesRepository {
     })
   }
 
+  async findAll(): Promise<CategoryDataDTO[]> {
+    const categories = await prisma.category.findMany();
+
+    return categories;
+  }
+
   async findByName(name: string): Promise<CategoryDataDTO | null> {
     const category = await prisma.category.findFirst({
       where: {
@@ -19,6 +25,24 @@ class PrismaCategoriesRepository implements ICategoriesRepository {
     });
 
     return category;
+  }
+
+  async findById(categoryId: string): Promise<CategoryDataDTO | null> {
+    const category = await prisma.category.findFirst({
+      where: {
+        id: categoryId
+      }
+    });
+
+    return category;
+  }
+
+  async delete(categoryId: string): Promise<void> {
+    await prisma.category.delete({
+      where: {
+        id: categoryId
+      }
+    });
   }
 }
 
