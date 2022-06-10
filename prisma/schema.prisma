@@ -12,13 +12,15 @@ model User {
 
   firstName String
   lastName  String
-  email     String @unique
+  email     String  @unique
   password  String
+  avatarUrl String?
 
   posts    Post[]
+  views    View[]
   comments Comment[]
   likes    Like[]
-  roles     Role[]
+  roles    Role[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -42,10 +44,14 @@ model Role {
 model Post {
   id String @id @default(uuid())
 
-  title    String
-  subtitle String
-  content  String
+  title     String
+  subtitle  String
+  content   String
+  bannerUrl String
+  slug      String
+  isDraft   Boolean @default(false)
 
+  views View[]
   comments Comment[]
   likes    Like[]
 
@@ -58,6 +64,18 @@ model Post {
   createdAt DateTime @default(now())
 
   @@map("posts")
+}
+
+model View {
+  id String @id @default(uuid())
+
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  post   Post?   @relation(fields: [postId], references: [id])
+  postId String?
+
+  @@map("views")
 }
 
 model Category {

@@ -2,6 +2,7 @@ import cors from "cors";
 import "dotenv/config";
 import express, { NextFunction, Request, Response } from "express";
 import "express-async-errors";
+import { resolve } from "path";
 import "reflect-metadata";
 // import swaggerFile from "./swagger.json";
 import "./container";
@@ -12,6 +13,7 @@ import { routes } from "./routes";
 const app = express();
 
 app.use(express.json());
+app.use(express.static(resolve(__dirname, "..", "temp")))
 
 // app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 app.use(cors());

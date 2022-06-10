@@ -1,6 +1,7 @@
 import { hash } from "bcryptjs";
 import { inject, injectable } from "tsyringe";
 import { AppError } from "../../../../errors/AppError";
+import { IRolesRepository } from "../../../../repositories/roles/IRolesRepository";
 import { IUsersRepository } from "../../../../repositories/users/IUsersRepository";
 
 interface IRequest {
@@ -14,7 +15,9 @@ interface IRequest {
 class CreateBlogUserUseCase {
   constructor(
     @inject("PrismaUsersRepository")
-    private usersRepository: IUsersRepository
+    private usersRepository: IUsersRepository,
+    @inject("PrismaRolesRepository")
+    private rolesRepository: IRolesRepository
   ) {}
 
   async execute({ firstName, lastName, email, password }: IRequest): Promise<void> {
@@ -42,11 +45,14 @@ class CreateBlogUserUseCase {
 
     const passwordHash = await hash(password, 8);
 
+    const role = await this.rolesRepository.findByName("visitor");
+
     await this.usersRepository.create({ 
-      firstName, 
+      firstName,
       lastName,
-      email, 
-      password: passwordHash
+      email,
+      password: passwordHash,
+      roleId: role?.id
     });
   }
 }

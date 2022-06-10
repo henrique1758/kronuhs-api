@@ -22,7 +22,7 @@ is(["admin", "editor"]),
 createCategoryController.handle);
 
 categoryRoute.delete(
-"/:id", 
+"/delete/:id", 
 ensureDashboardUserAuthenticated, 
 is(["admin"]),
 deleteCategoryController.handle);

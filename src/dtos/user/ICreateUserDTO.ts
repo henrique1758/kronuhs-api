@@ -3,7 +3,7 @@ interface ICreateUserDTO {
   lastName: string;
   email: string;
   password: string;
-  roleId: string;
+  roleId: string | undefined;
 }
 
 export { ICreateUserDTO };
