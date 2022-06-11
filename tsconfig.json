@@ -15,7 +15,8 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true,
-    "strict": true,                     
+    "strict": true,
+    "strictPropertyInitialization": false,             
     "skipLibCheck": true,                 
   },
   "include": [

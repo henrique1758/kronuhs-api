@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { verify } from "jsonwebtoken";
+import { authConfig } from "../config/auth";
 import { AppError } from "../errors/AppError";
 
 interface IPayload {
@@ -20,7 +21,7 @@ async function ensureBlogUserAuthenticated(
   const [, token] = authHeader?.split(" ");
 
   try {
-    const { sub } = verify(token, String(process.env.BLOG_SECRET_KEY)) as IPayload;
+    const { sub } = verify(token, authConfig.BLOG_SECRET_KEY) as IPayload;
 
     req.user = {
       id: sub

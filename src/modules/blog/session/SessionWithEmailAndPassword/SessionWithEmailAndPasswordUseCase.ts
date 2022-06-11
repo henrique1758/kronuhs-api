@@ -1,6 +1,7 @@
 import { compare } from "bcryptjs";
 import { sign } from "jsonwebtoken";
 import { inject, injectable } from "tsyringe";
+import { authConfig } from "../../../../config/auth";
 import { AppError } from "../../../../errors/AppError";
 import { IUsersRepository } from "../../../../repositories/users/IUsersRepository";
 
@@ -40,7 +41,7 @@ class SessionWithEmailAndPasswordUseCase {
       throw new AppError("Email or password incorrect!");
     };
 
-    const token = sign({}, String(process.env.BLOG_SECRET_KEY), {
+    const token = sign({}, authConfig.BLOG_SECRET_KEY, {
       subject: user.id,
       expiresIn: "1 day"
     });
@@ -61,3 +62,4 @@ class SessionWithEmailAndPasswordUseCase {
 }
 
 export { SessionWithEmailAndPasswordUseCase };
+

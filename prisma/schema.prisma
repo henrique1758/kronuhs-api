@@ -16,11 +16,12 @@ model User {
   password  String
   avatarUrl String?
 
-  posts    Post[]
-  views    View[]
-  comments Comment[]
-  likes    Like[]
-  roles    Role[]
+  posts      Post[]
+  views      View[]
+  comments   Comment[]
+  likes      Like[]
+  roles      Role[]
+  userTokens UserToken[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -51,7 +52,7 @@ model Post {
   slug      String
   isDraft   Boolean @default(false)
 
-  views View[]
+  views    View[]
   comments Comment[]
   likes    Like[]
 
@@ -118,4 +119,18 @@ model Like {
   createdAt DateTime @default(now())
 
   @@map("likes")
+}
+
+model UserToken {
+  id String @id @default(uuid())
+
+  refresh_token String
+  expires_date DateTime
+
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  created_at DateTime @default(now())
+
+  @@map("user_tokens")
 }

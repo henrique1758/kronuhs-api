@@ -1,6 +1,7 @@
 import { prisma } from "../../../config/prisma";
 import { ICreateUserDTO } from "../../../dtos/user/ICreateUserDTO";
 import { IUpdateUserAvatarDTO } from "../../../dtos/user/IUpdateAvatarUserDTO";
+import { IUpdatePasswordDTO } from "../../../dtos/user/IUpdatePasswordDTO";
 import { IUpdateUserDTO } from "../../../dtos/user/IUpdateUserDTO";
 import { UserDataDTO } from "../../../dtos/user/UserDataDTO";
 import { IUsersRepository } from "../IUsersRepository";
@@ -69,6 +70,17 @@ class PrismaUsersRepository implements IUsersRepository {
       },
       data: {
         avatarUrl: avatar_url
+      }
+    });
+  }
+
+  async updatePassword({ userId, newPassword }: IUpdatePasswordDTO): Promise<void> {
+    await prisma.user.update({
+      where: {
+        id: userId
+      },
+      data: {
+        password: newPassword
       }
     });
   }

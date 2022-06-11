@@ -1,5 +1,6 @@
 import { ICreateUserDTO } from "../../dtos/user/ICreateUserDTO";
 import { IUpdateUserAvatarDTO } from "../../dtos/user/IUpdateAvatarUserDTO";
+import { IUpdatePasswordDTO } from "../../dtos/user/IUpdatePasswordDTO";
 import { IUpdateUserDTO } from "../../dtos/user/IUpdateUserDTO";
 import { UserDataDTO } from "../../dtos/user/UserDataDTO";
 
@@ -10,6 +11,7 @@ interface IUsersRepository {
   findUserById(userId: string): Promise<UserDataDTO | null>;
   update(data: IUpdateUserDTO): Promise<void>;
   updateAvatarUser(data: IUpdateUserAvatarDTO): Promise<void>;
+  updatePassword(data: IUpdatePasswordDTO): Promise<void>;
   delete(userId: string): Promise<void>;
 }
 
