@@ -3,7 +3,7 @@ import { sign } from "jsonwebtoken";
 import { inject, injectable } from "tsyringe";
 import { authConfig } from "../../../../config/auth";
 import { AppError } from "../../../../errors/AppError";
-import { IUsersRepository } from "../../../../repositories/users/IUsersRepository";
+import { IBlogUsersRepository } from "../../../../repositories/blogUsers/IBlogUsersRepository";
 
 interface IRequest {
   email: string;
@@ -14,8 +14,7 @@ interface IResponse {
   token: string;
   userData: {
     id: string;
-    firstName: string;
-    lastName: string;
+    name: string;
     email: string;
     created_at: Date;
   };
@@ -24,8 +23,8 @@ interface IResponse {
 @injectable()
 class SessionWithEmailAndPasswordUseCase {
   constructor(
-    @inject("PrismaUsersRepository")
-    private usersRepository: IUsersRepository
+    @inject("PrismaBlogUsersRepository")
+    private usersRepository: IBlogUsersRepository
   ) {}
 
   async execute({ email, password }: IRequest): Promise<IResponse> {
@@ -35,7 +34,7 @@ class SessionWithEmailAndPasswordUseCase {
       throw new AppError("Email or password incorrect!");
     };
 
-    const passwordMatch = await compare(password, user.password);
+    const passwordMatch = await compare(password, user.password!);
 
     if (!passwordMatch) {
       throw new AppError("Email or password incorrect!");
@@ -50,8 +49,7 @@ class SessionWithEmailAndPasswordUseCase {
       token,
       userData: {
         id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
+        name: user.name,
         email: user.email,
         created_at: user.createdAt
       }

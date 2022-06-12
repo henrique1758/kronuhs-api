@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model DashboardUser {
   id String @id @default(uuid())
 
   firstName String
@@ -17,16 +17,32 @@ model User {
   avatarUrl String?
 
   posts      Post[]
-  views      View[]
-  comments   Comment[]
-  likes      Like[]
   roles      Role[]
-  userTokens UserToken[]
+  userTokens DashboardUserToken[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("users")
+  @@map("dashboard_users")
+}
+
+model BlogUser {
+  id String @id @default(uuid())
+
+  name String
+  email     String  @unique
+  password  String?
+  avatarUrl String?
+
+  views View[]
+  likes Like[]
+  comments Comment[]
+  userTokens BlogUserToken[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("blog_users")
 }
 
 model Role {
@@ -34,7 +50,7 @@ model Role {
 
   name String @unique
 
-  user   User?   @relation(fields: [userId], references: [id])
+  user   DashboardUser?   @relation(fields: [userId], references: [id])
   userId String?
 
   createdAt DateTime @default(now())
@@ -59,7 +75,7 @@ model Post {
   category   Category? @relation(fields: [categoryId], references: [id])
   categoryId String?
 
-  author   User?   @relation(fields: [authorId], references: [id])
+  author   DashboardUser?   @relation(fields: [authorId], references: [id])
   authorId String?
 
   createdAt DateTime @default(now())
@@ -70,7 +86,9 @@ model Post {
 model View {
   id String @id @default(uuid())
 
-  user   User?   @relation(fields: [userId], references: [id])
+  ipAdress String
+
+  user   BlogUser?   @relation(fields: [userId], references: [id])
   userId String?
 
   post   Post?   @relation(fields: [postId], references: [id])
@@ -96,7 +114,7 @@ model Comment {
 
   content String
 
-  user   User?   @relation(fields: [userId], references: [id])
+  user  BlogUser?   @relation(fields: [userId], references: [id])
   userId String?
 
   post   Post?   @relation(fields: [postId], references: [id])
@@ -110,7 +128,7 @@ model Comment {
 model Like {
   id String @id @default(uuid())
 
-  user   User?   @relation(fields: [userId], references: [id])
+  user  BlogUser?   @relation(fields: [userId], references: [id])
   userId String?
 
   post   Post?   @relation(fields: [postId], references: [id])
@@ -121,13 +139,27 @@ model Like {
   @@map("likes")
 }
 
-model UserToken {
+model DashboardUserToken {
   id String @id @default(uuid())
 
   refresh_token String
   expires_date DateTime
 
-  user   User?   @relation(fields: [userId], references: [id])
+  user   DashboardUser?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  created_at DateTime @default(now())
+
+  @@map("dashboard_user_tokens")
+}
+
+model BlogUserToken {
+  id String @id @default(uuid())
+
+  refresh_token String
+  expires_date DateTime
+
+  user   BlogUser?   @relation(fields: [userId], references: [id])
   userId String?
 
   created_at DateTime @default(now())

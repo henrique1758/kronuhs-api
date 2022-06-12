@@ -1,6 +1,6 @@
-import { inject, injectable } from 'tsyringe';
-import { AppError } from '../../../../errors/AppError';
-import { IUsersRepository } from '../../../../repositories/users/IUsersRepository';
+import { inject, injectable } from "tsyringe";
+import { AppError } from "../../../../errors/AppError";
+import { IDashboardUsersRepository } from "../../../../repositories/dashboardUsers/IDashboardUsersRepository";
 
 interface IRequest {
   userId: string;
@@ -10,8 +10,8 @@ interface IRequest {
 @injectable()
 class UpdateDashboardAvatarUserUseCase {
   constructor(
-  @inject('PrismaUsersRepository')
-  private usersRepository: IUsersRepository
+  @inject("PrismaUsersRepository")
+  private usersRepository: IDashboardUsersRepository
   ) {}
 
   async execute({ userId, avatar_url }: IRequest): Promise<void> {

@@ -1,7 +1,7 @@
 import { ICreateUserTokenDTO } from "../../dtos/userToken/ICreateUserTokenDTO";
 import { UserTokenDataDTO } from "../../dtos/userToken/UserTokenDataDTO";
 
-interface IUserTokensRepository {
+interface IDashboardUserTokensRepository {
   create(data: ICreateUserTokenDTO): Promise<void>;
   findByRefreshToken(refresh_token: string): Promise<UserTokenDataDTO | null>;
   findByUserIdAndRefreshToken(
@@ -11,5 +11,5 @@ interface IUserTokensRepository {
   deleteById(id: string): Promise<void>;
 }
 
-export { IUserTokensRepository };
+export { IDashboardUserTokensRepository };
 

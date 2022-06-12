@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { verify } from "jsonwebtoken";
 import { authConfig } from "../config/auth";
 import { AppError } from "../errors/AppError";
-import { PrismaUserTokensRepository } from "../repositories/userTokens/implementations/PrismaUserTokensRepository";
+import { PrismaDashboardUserTokensRepository } from "../repositories/dashboardUserTokens/implementations/PrismaDashboardUserTokensRepository";
 
 interface IPayload {
   sub: string;
@@ -15,7 +15,7 @@ async function ensureDashboardUserAuthenticated(
 ) {
   const authHeader = req.headers.authorization;
 
-  const userTokensRepository = new PrismaUserTokensRepository();
+  const userTokensRepository = new PrismaDashboardUserTokensRepository();
 
   if (!authHeader) {
     throw new AppError("Token is missing!", 401);

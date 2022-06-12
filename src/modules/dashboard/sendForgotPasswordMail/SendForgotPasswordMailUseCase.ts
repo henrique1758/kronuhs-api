@@ -4,16 +4,16 @@ import { v4 as uuidV4 } from "uuid";
 import { AppError } from "../../../errors/AppError";
 import { IDateProvider } from "../../../providers/DateProvider/IDateProvider";
 import { IMailProvider } from "../../../providers/MailProvider/IMailProvider";
-import { IUsersRepository } from "../../../repositories/users/IUsersRepository";
-import { IUserTokensRepository } from "../../../repositories/userTokens/IUserTokensRepository";
+import { IDashboardUsersRepository } from "../../../repositories/dashboardUsers/IDashboardUsersRepository";
+import { IDashboardUserTokensRepository } from "../../../repositories/dashboardUserTokens/IDashboardUserTokensRepository";
 
 @injectable()
 class SendForgotPasswordMailUseCase {
   constructor(
     @inject("PrismaUsersRepository")
-    private usersRepository: IUsersRepository,
+    private usersRepository: IDashboardUsersRepository,
     @inject("PrismaUserTokensRepository")
-    private userTokensRepository: IUserTokensRepository,
+    private userTokensRepository: IDashboardUserTokensRepository,
     @inject("DayjsDateProvider")
     private dateProvider: IDateProvider,
     @inject("EtherealMailProvider")

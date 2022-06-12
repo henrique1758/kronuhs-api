@@ -1,16 +1,16 @@
-import { inject, injectable } from 'tsyringe';
-import { UserDataDTO } from '../../../../dtos/user/UserDataDTO';
-import { AppError } from '../../../../errors/AppError';
-import { IUsersRepository } from '../../../../repositories/users/IUsersRepository';
+import { inject, injectable } from "tsyringe";
+import { DashboardUserDataDTO } from "../../../../dtos/dashboardUser/DashboardUserDataDTO";
+import { AppError } from "../../../../errors/AppError";
+import { IDashboardUsersRepository } from "../../../../repositories/dashboardUsers/IDashboardUsersRepository";
 
 type UserData = 
-  Pick<UserDataDTO, "id" | "firstName" | "lastName" | "email" | "createdAt">
+  Pick<DashboardUserDataDTO, "id" | "firstName" | "lastName" | "email" | "createdAt">
 
 @injectable()
 class ProfileDashboardUserUseCase {
   constructor(
-    @inject('PrismaUsersRepository')
-    private usersRepository: IUsersRepository
+    @inject("PrismaUsersRepository")
+    private usersRepository: IDashboardUsersRepository
     ) {}
     
 
@@ -21,15 +21,16 @@ class ProfileDashboardUserUseCase {
       throw new AppError("User does not exists!", 404);
     }
 
-    const user = {
+    const user: UserData = {
       id: userExists.id,
       firstName: userExists.firstName,
       lastName: userExists.lastName,
-      email: userExists.lastName,
+      email: userExists.email,
       createdAt: userExists.createdAt
-    };
+    }
 
     return user;
   }
 }
 export { ProfileDashboardUserUseCase };
+

@@ -2,8 +2,8 @@ import { hash } from "bcryptjs";
 import { inject, injectable } from "tsyringe";
 import { AppError } from "../../../errors/AppError";
 import { IDateProvider } from "../../../providers/DateProvider/IDateProvider";
-import { IUsersRepository } from "../../../repositories/users/IUsersRepository";
-import { IUserTokensRepository } from "../../../repositories/userTokens/IUserTokensRepository";
+import { IDashboardUsersRepository } from "../../../repositories/dashboardUsers/IDashboardUsersRepository";
+import { IDashboardUserTokensRepository } from "../../../repositories/dashboardUserTokens/IDashboardUserTokensRepository";
 
 interface IRequest {
   token: string;
@@ -14,11 +14,11 @@ interface IRequest {
 class ResetPasswordUserUseCase {
   constructor(
     @inject("PrismaUserTokensRepository")
-    private userTokensRepository: IUserTokensRepository,
+    private userTokensRepository: IDashboardUserTokensRepository,
     @inject("DayjsDateProvider")
     private dateProvider: IDateProvider,
     @inject("PrismaUsersRepository")
-    private userRepository: IUsersRepository
+    private userRepository: IDashboardUsersRepository
   ) {}
 
   async execute({ token, password }: IRequest): Promise<void> {

@@ -2,7 +2,6 @@ import slugify from 'slugify';
 import { inject, injectable } from 'tsyringe';
 import { AppError } from '../../../../errors/AppError';
 import { IPostsRepository } from '../../../../repositories/posts/IPostsRepository';
-import { IUsersRepository } from '../../../../repositories/users/IUsersRepository';
 
 interface IRequest {
   title: string;
@@ -17,9 +16,7 @@ interface IRequest {
 class CreatePostUseCase {
   constructor(
   @inject("PrismaPostsRepository")
-  private postsRepository: IPostsRepository,
-  @inject("PrismaUsersRepository")
-  private usersRepository: IUsersRepository
+  private postsRepository: IPostsRepository
   ) {}
 
   async execute({ 
@@ -48,12 +45,6 @@ class CreatePostUseCase {
 
     if (!categoryId) {
       throw new AppError("category id is required!");
-    }
-
-    const userExists = await this.usersRepository.findUserById(authorId);
-
-    if (!userExists) {
-      throw new AppError("User does not exists!");
     }
 
     const slug = slugify(title, {

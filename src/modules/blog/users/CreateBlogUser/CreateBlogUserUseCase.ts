@@ -1,12 +1,10 @@
 import { hash } from "bcryptjs";
 import { inject, injectable } from "tsyringe";
 import { AppError } from "../../../../errors/AppError";
-import { IRolesRepository } from "../../../../repositories/roles/IRolesRepository";
-import { IUsersRepository } from "../../../../repositories/users/IUsersRepository";
+import { IBlogUsersRepository } from "../../../../repositories/blogUsers/IBlogUsersRepository";
 
 interface IRequest {
-  firstName: string;
-  lastName: string;
+  name: string;
   email: string;
   password: string;
 }
@@ -14,19 +12,13 @@ interface IRequest {
 @injectable()
 class CreateBlogUserUseCase {
   constructor(
-    @inject("PrismaUsersRepository")
-    private usersRepository: IUsersRepository,
-    @inject("PrismaRolesRepository")
-    private rolesRepository: IRolesRepository
+    @inject("PrismaBlogUsersRepository")
+    private usersRepository: IBlogUsersRepository,
   ) {}
 
-  async execute({ firstName, lastName, email, password }: IRequest): Promise<void> {
-    if (!firstName) {
-      throw new AppError("First Name is required!", 400);
-    }
-
-    if (!lastName) {
-      throw new AppError("Last Name is required!", 400);
+  async execute({ name, email, password }: IRequest): Promise<void> {
+    if (!name) {
+      throw new AppError("Name is required!", 400);
     }
 
     if (!email) {
@@ -45,14 +37,10 @@ class CreateBlogUserUseCase {
 
     const passwordHash = await hash(password, 8);
 
-    const role = await this.rolesRepository.findByName("visitor");
-
     await this.usersRepository.create({ 
-      firstName,
-      lastName,
+      name,
       email,
       password: passwordHash,
-      roleId: role?.id
     });
   }
 }

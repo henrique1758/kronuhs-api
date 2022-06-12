@@ -1,7 +1,7 @@
 import { hash } from "bcryptjs";
 import { inject, injectable } from "tsyringe";
 import { AppError } from "../../../../errors/AppError";
-import { IUsersRepository } from "../../../../repositories/users/IUsersRepository";
+import { IDashboardUsersRepository } from "../../../../repositories/dashboardUsers/IDashboardUsersRepository";
 
 interface IRequest {
   firstName: string;
@@ -14,8 +14,8 @@ interface IRequest {
 @injectable()
 class CreateDashboardUserUseCase {
   constructor(
-    @inject("PrismaUsersRepository")
-    private usersRepository: IUsersRepository
+    @inject("PrismaDashboardUsersRepository")
+    private usersRepository: IDashboardUsersRepository
   ) {}
 
   async execute({ firstName, lastName, email, password, roleId }: IRequest): Promise<void> {

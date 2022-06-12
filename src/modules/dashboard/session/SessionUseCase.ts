@@ -4,8 +4,8 @@ import { inject, injectable } from "tsyringe";
 import { authConfig } from "../../../config/auth";
 import { AppError } from "../../../errors/AppError";
 import { IDateProvider } from "../../../providers/DateProvider/IDateProvider";
-import { IUsersRepository } from "../../../repositories/users/IUsersRepository";
-import { IUserTokensRepository } from "../../../repositories/userTokens/IUserTokensRepository";
+import { IDashboardUsersRepository } from "../../../repositories/dashboardUsers/IDashboardUsersRepository";
+import { IDashboardUserTokensRepository } from "../../../repositories/dashboardUserTokens/IDashboardUserTokensRepository";
 
 interface IRequest {
   email: string;
@@ -27,10 +27,10 @@ interface IResponse {
 @injectable()
 class SessionUseCase {
   constructor(
-    @inject("PrismaUsersRepository")
-    private usersRepository: IUsersRepository,
-    @inject("PrismaUserTokensRepository")
-    private userTokensRepository: IUserTokensRepository,
+    @inject("PrismaDashboardUsersRepository")
+    private usersRepository: IDashboardUsersRepository,
+    @inject("PrismaDashboardUserTokensRepository")
+    private userTokensRepository: IDashboardUserTokensRepository,
     @inject("DayjsDateProvider")
     private dateProvider: IDateProvider
   ) {}

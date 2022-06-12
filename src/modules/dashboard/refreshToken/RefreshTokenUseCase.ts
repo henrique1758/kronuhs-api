@@ -3,7 +3,7 @@ import { inject, injectable } from "tsyringe";
 import { authConfig } from "../../../config/auth";
 import { AppError } from "../../../errors/AppError";
 import { IDateProvider } from "../../../providers/DateProvider/IDateProvider";
-import { IUserTokensRepository } from "../../../repositories/userTokens/IUserTokensRepository";
+import { IDashboardUserTokensRepository } from "../../../repositories/dashboardUserTokens/IDashboardUserTokensRepository";
 
 interface IPayload {
   sub: string;
@@ -13,8 +13,8 @@ interface IPayload {
 @injectable()
 class RefreshTokenUseCase {
   constructor(
-    @inject("PrismaUserTokensRepository")
-    private userTokensRepository: IUserTokensRepository,
+    @inject("PrismaDashboardUserTokensRepository")
+    private userTokensRepository: IDashboardUserTokensRepository,
     @inject("DayjsDateProvider")
     private dateProvider: IDateProvider
   ) {}

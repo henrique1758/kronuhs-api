@@ -27,8 +27,7 @@ class PrismaPostsRepository implements IPostsRepository {
           select: {
             user: {
               select: {
-                firstName: true,
-                lastName: true,
+                name: true,
                 avatarUrl: true
               }
             },

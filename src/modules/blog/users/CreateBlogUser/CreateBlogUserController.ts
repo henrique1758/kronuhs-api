@@ -4,13 +4,12 @@ import { CreateBlogUserUseCase } from "./CreateBlogUserUseCase";
 
 class CreateBlogUserController {
   async handle(req:Request, res:Response): Promise<Response> {
-    const { firstName, lastName, email, password } = req.body;
+    const { name, email, password } = req.body;
 
     const createBlogUserUseCase = container.resolve(CreateBlogUserUseCase);
 
     await createBlogUserUseCase.execute({
-      firstName,
-      lastName,
+      name,
       email,
       password
     });
