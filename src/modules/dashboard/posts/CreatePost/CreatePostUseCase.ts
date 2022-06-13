@@ -1,7 +1,8 @@
-import slugify from 'slugify';
-import { inject, injectable } from 'tsyringe';
-import { AppError } from '../../../../errors/AppError';
-import { IPostsRepository } from '../../../../repositories/posts/IPostsRepository';
+import slugify from "slugify";
+import { inject, injectable } from "tsyringe";
+import TurnDownService from "turndown";
+import { AppError } from "../../../../errors/AppError";
+import { IPostsRepository } from "../../../../repositories/posts/IPostsRepository";
 
 interface IRequest {
   title: string;
@@ -11,6 +12,8 @@ interface IRequest {
   authorId: string;
   categoryId: string;
 }
+
+const turndownService = new TurnDownService();
 
 @injectable()
 class CreatePostUseCase {
@@ -51,10 +54,20 @@ class CreatePostUseCase {
       lower: true
     });
 
+    console.log({
+      html: content
+    });
+
+    const contentInMarkDown = turndownService.turndown(content);
+
+    console.log({
+      markdown: contentInMarkDown
+    });
+
     await this.postsRepository.create({
       title,
       subtitle,
-      content,
+      content: contentInMarkDown,
       bannerUrl,
       slug,
       authorId,

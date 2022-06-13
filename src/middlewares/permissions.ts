@@ -5,7 +5,7 @@ export function is(roles: string[]) {
   return async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.user;
 
-    const user = await prisma.user.findFirst({
+    const user = await prisma.dashboardUser.findFirst({
       where: {
         id
       },

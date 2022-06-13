@@ -14,8 +14,16 @@ class PrismaPostsRepository implements IPostsRepository {
         content,
         slug,
         bannerUrl,
-        authorId,
-        categoryId
+        author: {
+          connect: {
+            id: authorId
+          }
+        },
+        category: {
+          connect: {
+            id: categoryId
+          }
+        }
       }
     });
   }
