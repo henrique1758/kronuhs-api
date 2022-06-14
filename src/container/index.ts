@@ -5,6 +5,8 @@ import { IMailProvider } from "../providers/MailProvider/IMailProvider";
 import { EtherealMailProvider } from "../providers/MailProvider/implementations/EtherealMailProvider";
 import { IBlogUsersRepository } from "../repositories/blogUsers/IBlogUsersRepository";
 import { PrismaBlogUsersRepository } from "../repositories/blogUsers/implementations/PrismaBlogUsersRepository";
+import { IBlogUserTokensRepository } from "../repositories/blogUserTokens/IBlogUserTokensRepository";
+import { PrismaBlogUserTokensRepository } from "../repositories/blogUserTokens/implementations/PrismaBlogUserTokensRepository";
 import { ICategoriesRepository } from "../repositories/categories/ICategoriesRepository";
 import { PrismaCategoriesRepository } from "../repositories/categories/implementations/PrismaCategoriesRepository";
 import { ICommentsRepository } from "../repositories/comments/ICommentsRepository";
@@ -65,6 +67,11 @@ container.registerSingleton<IViewsRepository>(
 container.registerSingleton<IDashboardUserTokensRepository>(
   "PrismaDashboardUserTokensRepository",
   PrismaDashboardUserTokensRepository
+);
+
+container.registerSingleton<IBlogUserTokensRepository>(
+  "PrismaBlogUserTokensRepository",
+  PrismaBlogUserTokensRepository
 );
 
 container.registerSingleton<IDateProvider>(

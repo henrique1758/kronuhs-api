@@ -18,13 +18,13 @@ async function ensureBlogUserAuthenticated(
   const userTokensRepository = new PrismaBlogUserTokensRepository();
 
   if (!authHeader) {
-    return res.status(401).json({ message: "Token is missing!" })
+    throw new AppError("Token is missing!", 401);
   }
 
   const [, token] = authHeader?.split(" ");
 
   try {
-    const { sub } = verify(token, authConfig.BLOG_SECRET_KEY) as IPayload;
+    const { sub } = verify(token, authConfig.BLOG_REFRESH_SECRET) as IPayload;
 
     const user = await userTokensRepository.findByUserIdAndRefreshToken(
       sub,
