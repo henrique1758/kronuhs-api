@@ -13,7 +13,14 @@ interface IRequest {
   categoryId: string;
 }
 
-const turndownService = new TurnDownService();
+const turndownService = new TurnDownService({
+  headingStyle: 'setext',
+  codeBlockStyle: 'indented',
+  fence: '```',
+  strongDelimiter: '**',
+  bulletListMarker: '*',
+  linkStyle: 'inlined'
+});
 
 @injectable()
 class CreatePostUseCase {
@@ -54,15 +61,9 @@ class CreatePostUseCase {
       lower: true
     });
 
-    console.log({
-      html: content
-    });
-
     const contentInMarkDown = turndownService.turndown(content);
 
-    console.log({
-      markdown: contentInMarkDown
-    });
+    console.log({ markdown: contentInMarkDown });
 
     await this.postsRepository.create({
       title,
