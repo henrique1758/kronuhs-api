@@ -7,6 +7,7 @@ interface IBlogUsersRepository {
   create(data: ICreateBlogUserDTO): Promise<BlogUserDataDTO>;
   findAll(): Promise<BlogUserDataDTO[]>;
   findUserByEmail(email: string): Promise<BlogUserDataDTO | null>;
+  findUserByUserId(userId: string): Promise<BlogUserDataDTO | null>;
   updateAvatarUser(data: IUpdateBlogUserAvatarDTO): Promise<void>;
   updatePassword(data: IUpdatePasswordDTO): Promise<void>;
   delete(userId: string): Promise<void>;

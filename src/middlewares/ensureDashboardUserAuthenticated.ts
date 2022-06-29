@@ -41,7 +41,7 @@ async function ensureDashboardUserAuthenticated(
 
     next();
   } catch {
-    throw new AppError("Token is invalid!")
+    throw new AppError("Token is invalid!", 401);
   }
 }
 

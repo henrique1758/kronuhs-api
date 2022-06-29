@@ -26,6 +26,14 @@ class PrismaBlogUsersRepository implements IBlogUsersRepository {
     return users;
   }
 
+  async findUserByUserId(userId: string): Promise<BlogUserDataDTO | null> {
+    const user = await prisma.blogUser.findFirst({
+      where: { id: userId }
+    });
+
+    return user;
+  }
+
   async findUserByEmail(email: string): Promise<BlogUserDataDTO | null> {
     const user = await prisma.blogUser.findFirst({
       where: { email }
