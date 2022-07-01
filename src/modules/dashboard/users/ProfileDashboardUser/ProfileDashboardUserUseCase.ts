@@ -4,12 +4,12 @@ import { AppError } from "../../../../errors/AppError";
 import { IDashboardUsersRepository } from "../../../../repositories/dashboardUsers/IDashboardUsersRepository";
 
 type UserData = 
-  Pick<DashboardUserDataDTO, "id" | "firstName" | "lastName" | "email" | "createdAt">
+  Pick<DashboardUserDataDTO, "id" | "firstName" | "lastName" | "email" | "avatarUrl"| "createdAt">
 
 @injectable()
 class ProfileDashboardUserUseCase {
   constructor(
-    @inject("PrismaUsersRepository")
+    @inject("PrismaDashboardUsersRepository")
     private usersRepository: IDashboardUsersRepository
     ) {}
     
@@ -26,6 +26,7 @@ class ProfileDashboardUserUseCase {
       firstName: userExists.firstName,
       lastName: userExists.lastName,
       email: userExists.email,
+      avatarUrl: userExists.avatarUrl,
       createdAt: userExists.createdAt
     }
 

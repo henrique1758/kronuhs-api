@@ -1,6 +1,7 @@
 import { hash } from "bcryptjs";
 import { inject, injectable } from "tsyringe";
 import { AppError } from "../../../../errors/AppError";
+import { IStorageProvider } from "../../../../providers/StorageProvider/IStorageProvider";
 import { IDashboardUsersRepository } from "../../../../repositories/dashboardUsers/IDashboardUsersRepository";
 
 interface IRequest {
@@ -8,6 +9,7 @@ interface IRequest {
   lastName: string;
   email: string;
   password: string;
+  avatarFile?: string;
   roleId: string;
 }
 
@@ -15,10 +17,12 @@ interface IRequest {
 class CreateDashboardUserUseCase {
   constructor(
     @inject("PrismaDashboardUsersRepository")
-    private usersRepository: IDashboardUsersRepository
+    private usersRepository: IDashboardUsersRepository,
+    @inject("StorageProvider")
+    private storageProvider: IStorageProvider
   ) {}
 
-  async execute({ firstName, lastName, email, password, roleId }: IRequest): Promise<void> {
+  async execute({ firstName, lastName, email, password, avatarFile, roleId }: IRequest): Promise<void> {
     if (!firstName) {
       throw new AppError("First Name is required!", 400);
     }
@@ -41,6 +45,10 @@ class CreateDashboardUserUseCase {
       throw new AppError("User already exists!")
     }
 
+    if (avatarFile) {
+      await this.storageProvider.save(avatarFile, "avatar");
+    }
+
     const passwordHash = await hash(password, 8);
 
     const user = await this.usersRepository.create({ 
@@ -48,6 +56,7 @@ class CreateDashboardUserUseCase {
       lastName,
       email, 
       password: passwordHash,
+      avatar_url: avatarFile,
       roleId
     });
   }

@@ -1,33 +1,34 @@
 import { inject, injectable } from "tsyringe";
 import { AppError } from "../../../../errors/AppError";
+import { IStorageProvider } from "../../../../providers/StorageProvider/IStorageProvider";
 import { IDashboardUsersRepository } from "../../../../repositories/dashboardUsers/IDashboardUsersRepository";
 
 interface IRequest {
   userId: string;
-  avatar_url: string | undefined;
+  avatarFile: string;
 }
 
 @injectable()
 class UpdateDashboardAvatarUserUseCase {
   constructor(
-  @inject("PrismaUsersRepository")
-  private usersRepository: IDashboardUsersRepository
+    @inject("PrismaDashboardUsersRepository")
+    private usersRepository: IDashboardUsersRepository
   ) {}
 
-  async execute({ userId, avatar_url }: IRequest): Promise<void> {
-    const userExists = await this.usersRepository.findUserById(userId);
+  async execute({ userId, avatarFile }: IRequest): Promise<void> {
+    const user = await this.usersRepository.findUserById(userId);
 
-    if (!userExists) {
+    if (!user) {
       throw new AppError("User does not exists!");
     }
 
-    if (!avatar_url) {
-      throw new AppError("avatar url is required!");
+    if (!avatarFile) {
+      throw new AppError("avatar file is required!");
     }
 
     await this.usersRepository.updateAvatarUser({
       userId,
-      avatar_url
+      avatar_url: avatarFile
     });
   }
 }

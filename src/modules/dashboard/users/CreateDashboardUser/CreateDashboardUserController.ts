@@ -5,6 +5,7 @@ import { CreateDashboardUserUseCase } from "./CreateDashboardUserUseCase";
 class CreateDashboardUserController {
   async handle(req:Request, res:Response) {
     const { firstName, lastName, email, password, roleId } = req.body;
+    const avatarFile = req.file?.filename;
 
     const createDashboardUserUseCase = container.resolve(CreateDashboardUserUseCase);
 
@@ -13,6 +14,7 @@ class CreateDashboardUserController {
       lastName,
       email,
       password,
+      avatarFile,
       roleId
     });
 

@@ -5,13 +5,13 @@ import { UpdateDashboardAvatarUserUseCase } from "./UpdateDashboardAvatarUserUse
 class UpdateDashboardAvatarUserController {
   async handle(req: Request, res: Response): Promise<Response> {
     const { id } = req.user;
-    const avatar_file = req.file?.filename;
+    const avatarFile = req.file?.filename;
 
     const updateDashboardAvatarUserUseCase = container.resolve(UpdateDashboardAvatarUserUseCase);
 
     await updateDashboardAvatarUserUseCase.execute({
       userId: id,
-      avatar_url: avatar_file
+      avatarFile
     });
 
     return res.json({ message: "User avatar updated successfuly!" })

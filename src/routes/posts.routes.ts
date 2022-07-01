@@ -1,6 +1,6 @@
 import { Router } from "express";
 import multer from "multer";
-import { multerConfig } from "../config/multer";
+import uploadConfig from "../config/multer";
 import { ensureDashboardUserAuthenticated } from "../middlewares/ensureDashboardUserAuthenticated";
 import { is } from "../middlewares/permissions";
 import {
@@ -19,20 +19,22 @@ const updatePostController = new UpdatePostController();
 const updateIsDraftPostController = new UpdateIsDraftPostController();
 const deletePostController = new DeletePostController();
 
+const upload = multer(uploadConfig);
+
 postRoute.get("/", findAllPostsController.handle);
 
 postRoute.post(
 "/",
 ensureDashboardUserAuthenticated, 
 is(["admin", "editor"]),
-multer(multerConfig("postBg")).single("banner"),
+upload.single("banner"),
 createPostController.handle);
 
 postRoute.put(
 "/update/:id",
 ensureDashboardUserAuthenticated,
 is(["admin", "editor"]),
-multer(multerConfig("postBg")).single("banner"),
+upload.single("banner"),
 updatePostController.handle);
 
 postRoute.patch(

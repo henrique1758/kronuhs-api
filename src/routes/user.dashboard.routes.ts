@@ -1,6 +1,6 @@
 import { Router } from "express";
 import multer from "multer";
-import { multerConfig } from "../config/multer";
+import uploadConfig from "../config/multer";
 import { ensureDashboardUserAuthenticated } from "../middlewares/ensureDashboardUserAuthenticated";
 import { is } from "../middlewares/permissions";
 import { CreateDashboardUserController } from "../modules/dashboard/users/CreateDashboardUser/CreateDashboardUserController";
@@ -20,6 +20,8 @@ const updateDashboardAvatarUserController = new UpdateDashboardAvatarUserControl
 
 const profileDashboardUserController = new ProfileDashboardUserController();
 
+const uploadAvatar = multer(uploadConfig);
+
 userDashboardRoute.get(
 "/",
 ensureDashboardUserAuthenticated,
@@ -36,7 +38,8 @@ profileDashboardUserController.handle
 userDashboardRoute.post(
 "/",
 ensureDashboardUserAuthenticated, 
-is(["admin"]), 
+is(["admin"]),
+uploadAvatar.single("avatar"),
 createDashboardUserController.handle);
 
 userDashboardRoute.put(
@@ -47,7 +50,7 @@ updateDashboardUserController.handle);
 userDashboardRoute.patch(
 "/update/avatar",
 ensureDashboardUserAuthenticated, 
-multer(multerConfig("avatar")).single("avatar"),
+uploadAvatar.single("avatar"),
 updateDashboardAvatarUserController.handle
 );
 

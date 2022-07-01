@@ -29,7 +29,7 @@ async function ensureBlogUserAuthenticated(
 
     next();
   } catch {
-    throw new AppError({ error: true, code: "token.invalid" }, 401);
+    throw new AppError({ error: true, code: "token.expired" }, 401);
   }
 }
 

@@ -12,7 +12,7 @@ interface IRequest {
 @injectable()
 class UpdateDashboardUserUseCase {
   constructor(
-  @inject("PrismaUsersRepository")
+  @inject("PrismaDashboardUsersRepository")
   private usersRepository: IDashboardUsersRepository
   ) {}
 

@@ -49,7 +49,7 @@ class SessionWithEmailAndPasswordUseCase {
 
     const token = sign({}, authConfig.BLOG_SECRET_KEY, {
       subject: user.id,
-      expiresIn: 10
+      expiresIn: authConfig.TOKEN_EXPIRES_IN
     });
 
     const refresh_token = sign({ email }, authConfig.BLOG_REFRESH_SECRET, {

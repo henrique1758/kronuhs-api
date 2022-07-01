@@ -3,6 +3,9 @@ import { IDateProvider } from "../providers/DateProvider/IDateProvider";
 import { DayjsDateProvider } from "../providers/DateProvider/implementations/DayjsDateProvider";
 import { IMailProvider } from "../providers/MailProvider/IMailProvider";
 import { EtherealMailProvider } from "../providers/MailProvider/implementations/EtherealMailProvider";
+import { LocalStorageProvider } from "../providers/StorageProvider/implementations/LocalStorageProvider";
+import { S3StorageProvider } from "../providers/StorageProvider/implementations/S3StorageProvider";
+import { IStorageProvider } from "../providers/StorageProvider/IStorageProvider";
 import { IBlogUsersRepository } from "../repositories/blogUsers/IBlogUsersRepository";
 import { PrismaBlogUsersRepository } from "../repositories/blogUsers/implementations/PrismaBlogUsersRepository";
 import { IBlogUserTokensRepository } from "../repositories/blogUserTokens/IBlogUserTokensRepository";
@@ -82,4 +85,14 @@ container.registerSingleton<IDateProvider>(
 container.registerInstance<IMailProvider>(
   "EtherealMailProvider",
   new EtherealMailProvider()
+);
+
+const diskStorage = {
+  local: LocalStorageProvider,
+  s3: S3StorageProvider
+}
+
+container.registerSingleton<IStorageProvider>(
+  "StorageProvider",
+  diskStorage[process.env.disk]
 );
