@@ -1,18 +1,18 @@
+import { S3 } from "aws-sdk";
 import fs from "fs";
+import mime from "mime";
 import { resolve } from "path";
 
-import { S3 } from "aws-sdk";
-import mime from "mime";
+import upload from "../../../config/multer";
 
 import { IStorageProvider } from "../IStorageProvider";
-import upload from "../../../config/multer";
 
 class S3StorageProvider implements IStorageProvider {
   private client: S3;
 
   constructor() {
     this.client = new S3({
-      region: process.env.AWS_BUCKET_REGION
+      region: process.env.AWS_BUCKET_REGION,
     });
   }
 
@@ -23,13 +23,15 @@ class S3StorageProvider implements IStorageProvider {
 
     const ContentType = mime.getType(originalName);
 
-    await this.client.putObject({
-      Bucket: `${process.env.AWS_BUCKET}/${folder}`,
-      Key: file,
-      ACL: "public-read",
-      Body: fileContent,
-      ContentType,
-    }).promise();
+    await this.client
+      .putObject({
+        Bucket: `${process.env.AWS_BUCKET}/${folder}`,
+        Key: file,
+        ACL: "public-read",
+        Body: fileContent,
+        ContentType,
+      })
+      .promise();
 
     await fs.promises.unlink(originalName);
 
@@ -37,11 +39,13 @@ class S3StorageProvider implements IStorageProvider {
   }
 
   async delete(file: string, folder: string): Promise<void> {
-    await this.client.deleteObject({
-      Bucket: `${process.env.AWS_BUCKET}/${folder}`,
-      Key: file
-    }).promise();
+    await this.client
+      .deleteObject({
+        Bucket: `${process.env.AWS_BUCKET}/${folder}`,
+        Key: file,
+      })
+      .promise();
   }
-};
+}
 
-export { S3StorageProvider }
+export { S3StorageProvider };

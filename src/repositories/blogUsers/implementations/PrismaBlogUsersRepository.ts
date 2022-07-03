@@ -64,7 +64,7 @@ class PrismaBlogUsersRepository implements IBlogUsersRepository {
   }
 
   async updateAvatarUser({ userId, avatar_url }: IUpdateUserAvatarDTO): Promise<void> {
-    await prisma.dashboardUser.update({
+    await prisma.blogUser.update({
       where: {
         id: userId
       },

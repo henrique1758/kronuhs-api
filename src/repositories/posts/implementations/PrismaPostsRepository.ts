@@ -61,6 +61,9 @@ class PrismaPostsRepository implements IPostsRepository {
             comments: true
           }
         }
+      },
+      orderBy: {
+        createdAt: "desc"
       }
     });
 
@@ -69,7 +72,39 @@ class PrismaPostsRepository implements IPostsRepository {
 
   async findByPostId(postId: string): Promise<PostDataDTO | null> {
     const post = await prisma.post.findFirst({
-      where: { id: postId }
+      where: { id: postId },
+      include: {
+        comments: {
+          select: {
+            user: {
+              select: {
+                name: true,
+                avatarUrl: true
+              }
+            },
+            content: true
+          }
+        },
+        author: {
+          select: {
+            firstName: true,
+            lastName: true,
+            avatarUrl: true,
+          }
+        },
+        category: {
+          select: {
+            name: true
+          }
+        },
+        _count: {
+          select: {
+            views: true,
+            likes: true,
+            comments: true
+          }
+        }
+      },
     });
 
     return post;

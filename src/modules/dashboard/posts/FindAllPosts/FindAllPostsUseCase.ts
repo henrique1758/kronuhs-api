@@ -1,5 +1,6 @@
 import { inject, injectable } from "tsyringe";
 import { PostDataDTO } from "../../../../dtos/post/PostDataDTO";
+import { PostMap } from "../../../../mappers/PostMap";
 import { IPostsRepository } from "../../../../repositories/posts/IPostsRepository";
 
 @injectable()
@@ -10,7 +11,9 @@ class FindAllPostsUseCase {
   ) {}
 
   async execute(): Promise<PostDataDTO[]> {
-    const posts = await this.postsRepository.findAll();
+    const response = await this.postsRepository.findAll();
+
+    const posts = response.map(post => PostMap.toDTO(post));
 
     return posts;
   }

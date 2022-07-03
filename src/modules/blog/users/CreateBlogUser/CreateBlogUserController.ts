@@ -19,4 +19,3 @@ class CreateBlogUserController {
 }
 
 export { CreateBlogUserController };
-

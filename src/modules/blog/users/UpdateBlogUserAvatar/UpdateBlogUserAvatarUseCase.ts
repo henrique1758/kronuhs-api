@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import { AppError } from "../../../../errors/AppError";
 import { IStorageProvider } from "../../../../providers/StorageProvider/IStorageProvider";
-import { IDashboardUsersRepository } from "../../../../repositories/dashboardUsers/IDashboardUsersRepository";
+import { IBlogUsersRepository } from "../../../../repositories/blogUsers/IBlogUsersRepository";
 
 interface IRequest {
   userId: string;
@@ -9,16 +9,16 @@ interface IRequest {
 }
 
 @injectable()
-class UpdateDashboardAvatarUserUseCase {
+class UpdateBlogUserAvatarUseCase {
   constructor(
-    @inject("PrismaDashboardUsersRepository")
-    private usersRepository: IDashboardUsersRepository,
+    @inject("PrismaBlogUsersRepository")
+    private usersRepository: IBlogUsersRepository,
     @inject("StorageProvider")
     private storageProvider: IStorageProvider
   ) {}
 
   async execute({ userId, avatarFile }: IRequest): Promise<void> {
-    const user = await this.usersRepository.findUserById(userId);
+    const user = await this.usersRepository.findUserByUserId(userId);
 
     if (!user) {
       throw new AppError("User does not exists!");
@@ -40,5 +40,5 @@ class UpdateDashboardAvatarUserUseCase {
     });
   }
 }
-export { UpdateDashboardAvatarUserUseCase };
+export { UpdateBlogUserAvatarUseCase };
 

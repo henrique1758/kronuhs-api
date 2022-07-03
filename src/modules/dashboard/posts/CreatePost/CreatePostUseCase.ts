@@ -2,6 +2,7 @@ import slugify from "slugify";
 import { inject, injectable } from "tsyringe";
 import TurnDownService from "turndown";
 import { AppError } from "../../../../errors/AppError";
+import { IStorageProvider } from "../../../../providers/StorageProvider/IStorageProvider";
 import { IPostsRepository } from "../../../../repositories/posts/IPostsRepository";
 
 interface IRequest {
@@ -25,8 +26,10 @@ const turndownService = new TurnDownService({
 @injectable()
 class CreatePostUseCase {
   constructor(
-  @inject("PrismaPostsRepository")
-  private postsRepository: IPostsRepository
+    @inject("PrismaPostsRepository")
+    private postsRepository: IPostsRepository,
+    @inject("StorageProvider")
+    private storageProvider: IStorageProvider
   ) {}
 
   async execute({ 
@@ -57,13 +60,15 @@ class CreatePostUseCase {
       throw new AppError("category id is required!");
     }
 
+    if (bannerUrl) {
+      await this.storageProvider.save(bannerUrl, "postBanner");
+    }
+
     const slug = slugify(title, {
       lower: true
     });
 
     const contentInMarkDown = turndownService.turndown(content);
-
-    console.log({ markdown: contentInMarkDown });
 
     await this.postsRepository.create({
       title,

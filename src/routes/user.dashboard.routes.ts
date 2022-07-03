@@ -1,6 +1,6 @@
 import { Router } from "express";
 import multer from "multer";
-import uploadConfig from "../config/multer";
+import upload from "../config/multer";
 import { ensureDashboardUserAuthenticated } from "../middlewares/ensureDashboardUserAuthenticated";
 import { is } from "../middlewares/permissions";
 import { CreateDashboardUserController } from "../modules/dashboard/users/CreateDashboardUser/CreateDashboardUserController";
@@ -20,7 +20,7 @@ const updateDashboardAvatarUserController = new UpdateDashboardAvatarUserControl
 
 const profileDashboardUserController = new ProfileDashboardUserController();
 
-const uploadAvatar = multer(uploadConfig);
+const uploadAvatar = multer(upload);
 
 userDashboardRoute.get(
 "/",

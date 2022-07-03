@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import { DashboardUserDataDTO } from "../../../../dtos/dashboardUser/DashboardUserDataDTO";
 import { AppError } from "../../../../errors/AppError";
+import { UserMap } from "../../../../mappers/UserMap";
 import { IDashboardUsersRepository } from "../../../../repositories/dashboardUsers/IDashboardUsersRepository";
 
 type UserData = 
@@ -21,16 +22,7 @@ class ProfileDashboardUserUseCase {
       throw new AppError("User does not exists!", 404);
     }
 
-    const user: UserData = {
-      id: userExists.id,
-      firstName: userExists.firstName,
-      lastName: userExists.lastName,
-      email: userExists.email,
-      avatarUrl: userExists.avatarUrl,
-      createdAt: userExists.createdAt
-    }
-
-    return user;
+    return UserMap.toDTO(userExists);
   }
 }
 export { ProfileDashboardUserUseCase };

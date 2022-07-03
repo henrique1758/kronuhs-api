@@ -7,6 +7,7 @@ interface IRequest {
   name: string;
   email: string;
   password: string;
+  avatarFile?: string;
 }
 
 @injectable()
@@ -16,7 +17,7 @@ class CreateBlogUserUseCase {
     private usersRepository: IBlogUsersRepository,
   ) {}
 
-  async execute({ name, email, password }: IRequest): Promise<void> {
+  async execute({ name, email, password, avatarFile }: IRequest): Promise<void> {
     if (!name) {
       throw new AppError("Name is required!", 400);
     }
@@ -41,6 +42,7 @@ class CreateBlogUserUseCase {
       name,
       email,
       password: passwordHash,
+      avatar_url: avatarFile
     });
   }
 }

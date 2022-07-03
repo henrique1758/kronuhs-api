@@ -75,7 +75,7 @@ model Post {
   category   Category? @relation(fields: [categoryId], references: [id])
   categoryId String?
 
-  author   DashboardUser?   @relation(fields: [authorId], references: [id])
+  author   DashboardUser?   @relation(fields: [authorId], references: [id]) 
   authorId String?
 
   createdAt DateTime @default(now())

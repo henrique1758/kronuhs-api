@@ -1,12 +1,13 @@
 import { inject, injectable } from "tsyringe";
 import { AppError } from "../../../../errors/AppError";
+import { BlogUserMap } from "../../../../mappers/BlogUserMap";
 import { IBlogUsersRepository } from "../../../../repositories/blogUsers/IBlogUsersRepository";
 
 interface BlogUserData {
-  id: string | undefined;
-  name: string | undefined;
-  email: string | undefined;
-  avatarUrl: string | undefined | null;
+  id: string;
+  name: string;
+  email: string;
+  avatarUrl: string;
 }
 
 @injectable()
@@ -23,14 +24,7 @@ class ProfileBlogUserUseCase {
 
     const user = await this.usersRepository.findUserByUserId(userId);
 
-    const userData: BlogUserData = {
-      id: user?.id,
-      name: user?.id,
-      email: user?.email,
-      avatarUrl: user?.avatarUrl
-    }
-
-    return userData
+    return BlogUserMap.toDTO(user);
   }
 }
 

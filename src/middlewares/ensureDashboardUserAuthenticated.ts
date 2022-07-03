@@ -15,25 +15,15 @@ async function ensureDashboardUserAuthenticated(
 ) {
   const authHeader = req.headers.authorization;
 
-  const userTokensRepository = new PrismaDashboardUserTokensRepository();
 
   if (!authHeader) {
-    throw new AppError("Token is missing!", 401);
+    throw new AppError({ error: true, code: "token.missing" }, 401);
   }
 
   const [, token] = authHeader?.split(" ");
 
   try {
-    const { sub } = verify(token, authConfig.DASHBOARD_REFRESH_SECRET) as IPayload;
-
-    const user = await userTokensRepository.findByUserIdAndRefreshToken(
-      sub,
-      token
-    );
-
-    if (!user) {
-      throw new AppError("User does not exists!", 401);
-    }
+    const { sub } = verify(token, authConfig.DASHBOARD_SECRET_KEY) as IPayload;
 
     req.user = {
       id: sub
@@ -41,7 +31,7 @@ async function ensureDashboardUserAuthenticated(
 
     next();
   } catch {
-    throw new AppError("Token is invalid!", 401);
+    throw new AppError({ error: true, code: "token.expired" }, 401);
   }
 }
 
