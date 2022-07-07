@@ -19,6 +19,7 @@ interface IResponse {
     firstName: string;
     lastName: string;
     email: string;
+    avatarUrl: string;
     created_at: Date;
   };
   refresh_token: string;
@@ -71,6 +72,7 @@ class SessionUseCase {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
+        avatarUrl: user.avatarUrl,
         created_at: user.createdAt
       },
       refresh_token

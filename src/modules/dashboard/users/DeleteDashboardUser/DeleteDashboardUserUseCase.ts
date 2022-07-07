@@ -18,7 +18,11 @@ class DeleteDashboardUserUseCase {
     const userToDeleteExists = await this.usersRepository.findUserById(userIdToDelete);
 
     if (!userToDeleteExists) {
-      throw new AppError("User does not exists!");
+      throw new AppError("User does not exists!", 404);
+    }
+
+    if (userToDeleteExists.email === process.env.ADMIN_EMAIL) {
+      throw new AppError("Unauthorized action!", 401);
     }
 
     if (userToDeleteExists.id === userIdLoggedIn) {

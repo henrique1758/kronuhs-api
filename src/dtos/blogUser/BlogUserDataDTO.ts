@@ -4,6 +4,7 @@ interface BlogUserDataDTO {
   email: string;
   password: string | null;
   avatarUrl: string | null;
+  githubId: string | null;
   createdAt: Date;
   updatedAt: Date;
 }

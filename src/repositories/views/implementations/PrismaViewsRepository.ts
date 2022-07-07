@@ -1,14 +1,16 @@
 import { prisma } from "../../../config/prisma";
 import { ICreateViewDTO } from "../../../dtos/views/ICreateViewDTO";
+import { IFindPostRequest } from "../../../dtos/views/IFindPostRequest";
 import { ViewDataDTO } from "../../../dtos/views/ViewDataDTO";
 import { IViewsRepository } from "../IViewsRepository";
 
 class PrismaViewsRepository implements IViewsRepository {
-  async create({ userId, postId }: ICreateViewDTO): Promise<void> {
+  async create({ userId, postId, ipAdress }: ICreateViewDTO): Promise<void> {
     await prisma.view.create({
       data: {
+        ipAdress,
         userId,
-        postId
+        postId,
       }
     });
   }
@@ -21,6 +23,17 @@ class PrismaViewsRepository implements IViewsRepository {
     });
 
     return views;
+  }
+
+  async findByIpAndPostId({ ip, postId }: IFindPostRequest): Promise<ViewDataDTO | null> {
+    const view = await prisma.view.findFirst({
+      where: {
+        ipAdress: ip,
+        postId
+      }
+    });
+
+    return view;
   }
 }
 

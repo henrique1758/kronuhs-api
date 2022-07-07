@@ -3,6 +3,7 @@ interface ICreateBlogUserDTO {
   email: string;
   password?: string;
   avatar_url?: string;
+  githubId?: string;
 }
 
 export { ICreateBlogUserDTO };

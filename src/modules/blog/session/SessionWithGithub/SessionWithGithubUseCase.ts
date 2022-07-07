@@ -9,14 +9,10 @@ interface IAxiosResponse {
 }
 
 interface User {
+  id: string;
   name: string;
   email: string;
   avatar_url: string;
-}
-
-interface IResponse {
-  token: string;
-  userData: User
 }
 
 @injectable()
@@ -34,17 +30,17 @@ class SessionWithGithubUseCase {
         client_id: process.env.GITHUB_CLIENT_ID,
         client_secret: process.env.GITHUB_CLIENT_SECRET,
         code
-      }, 
+      },
       headers: {
         "Accept": "application/json"
       }
     });
 
-    const { data: { name, email, avatar_url } } = await axios.get<User>("https://api.github.com/user", {
+    const { data: { id, name, email, avatar_url } } = await axios.get<User>("https://api.github.com/user", {
       headers: {
         authorization: `Bearer ${accessTokenResponse.access_token}`
       }
-    });
+    });    
 
     let user = await this.usersRepository.findUserByEmail(email);
 
@@ -52,7 +48,8 @@ class SessionWithGithubUseCase {
       user = await this.usersRepository.create({
         name,
         email,
-        avatar_url
+        avatar_url,
+        githubId: id.toString()
       });
     }
 

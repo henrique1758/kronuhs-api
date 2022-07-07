@@ -6,10 +6,23 @@ interface PostDataDTO {
   isDraft: boolean;
   bannerUrl: string;
   slug: string;
+  comments?: {
+    content: string;
+    user: {
+      name: string;
+      avatarUrl: string;
+    },
+    createdAt: Date;
+  }[];
+  likes?: {
+    userId: string;
+    postId: string;
+  }[];
   category: {
     name: string;
   };
   author: {
+    id?: string;
     firstName: string;
     lastName: string;
     avatarUrl: string;

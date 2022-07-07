@@ -10,6 +10,8 @@ class PostMap {
     bannerUrl,
     slug,
     author,
+    comments,
+    likes,
     category,
     _count,
     createdAt
@@ -27,6 +29,22 @@ class PostMap {
         lastName: author.lastName,
         avatarUrl: `https://kronuhs.s3.sa-east-1.amazonaws.com/avatar/${author.avatarUrl}`,
       },
+      comments: comments.map(comment => {
+        return {
+          content: comment.content,
+          author: {
+            name: comment.user.name,
+            avatarUrl: `https://kronuhs.s3.sa-east-1.amazonaws.com/avatar/${comment.user.avatarUrl}`,
+          },
+          createdAt: comment.createdAt
+        }
+      }),
+      likes: likes.map(like => {
+        return {
+          userId: like.userId,
+          postId: like.postId
+        }
+      }),
       category: {
         name: category.name 
       },

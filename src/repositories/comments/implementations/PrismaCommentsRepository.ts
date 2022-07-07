@@ -24,6 +24,24 @@ class PrismaCommentsRepository implements ICommentsRepository {
     return comments;
   }
 
+  async findAllByPostId(postId: string): Promise<CommentDataDTO[]> {
+    const comments = await prisma.comment.findMany({
+      where: {
+        postId
+      },
+      include: {
+        user: {
+          select: {
+            avatarUrl: true,
+            name: true
+          }
+        }
+      }
+    });
+
+    return comments;
+  }
+
   async delete(commentId: string): Promise<void> {
     await prisma.comment.delete({
       where: {

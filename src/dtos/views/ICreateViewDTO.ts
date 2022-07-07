@@ -1,5 +1,6 @@
 interface ICreateViewDTO {
-  userId: string;
+  ipAdress: string;
+  userId?: string;
   postId: string;
 }
 

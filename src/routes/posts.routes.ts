@@ -8,12 +8,14 @@ import {
 } from "../modules/dashboard/posts/CreatePost/CreatePostController";
 import { DeletePostController } from "../modules/dashboard/posts/DeletePost/DeletePostController";
 import { FindAllPostsController } from "../modules/dashboard/posts/FindAllPosts/FindAllPostsController";
+import { FindPostBySlugController } from "../modules/dashboard/posts/FindPostBySlug/FindPostBySlugController";
 import { UpdateIsDraftPostController } from "../modules/dashboard/posts/UpdateIsDraftPost/UpdateIsDraftPostController";
 import { UpdatePostController } from "../modules/dashboard/posts/UpdatePost/UpdatePostController";
 
 const postRoute = Router();
 
 const findAllPostsController = new FindAllPostsController();
+const findPostBySlugController = new FindPostBySlugController();
 const createPostController = new CreatePostController();
 const updatePostController = new UpdatePostController();
 const updateIsDraftPostController = new UpdateIsDraftPostController();
@@ -22,6 +24,8 @@ const deletePostController = new DeletePostController();
 const upload = multer(uploadConfig);
 
 postRoute.get("/", findAllPostsController.handle);
+
+postRoute.get("/:slug", findPostBySlugController.handle);
 
 postRoute.post(
 "/",

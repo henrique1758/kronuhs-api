@@ -7,6 +7,7 @@ interface IPostsRepository {
   create(data: ICreatePostDTO): Promise<void>;
   findAll(): Promise<PostDataDTO[]>;
   findByPostId(postId: string): Promise<PostDataDTO | null>;
+  findByPostSlug(slug: string): Promise<PostDataDTO | null>;
   update(data: IUpdatePostDTO): Promise<void>;
   updateIsDraft(data: IUpdateIsDraftPostDTO): Promise<void>;
   delete(postId: string): Promise<void>;

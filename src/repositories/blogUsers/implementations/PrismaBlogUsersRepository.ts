@@ -7,13 +7,14 @@ import { IUpdateUserDTO } from "../../../dtos/dashboardUser/IUpdateUserDTO";
 import { IBlogUsersRepository } from "../IBlogUsersRepository";
 
 class PrismaBlogUsersRepository implements IBlogUsersRepository {
-  async create({ name, email, password, avatar_url }: ICreateBlogUserDTO): Promise<BlogUserDataDTO> {
+  async create({ name, email, password, avatar_url, githubId }: ICreateBlogUserDTO): Promise<BlogUserDataDTO> {
     const user = await prisma.blogUser.create({
       data: {
         name,
         email,
         password,
         avatarUrl: avatar_url,
+        githubId
       }
     });
 

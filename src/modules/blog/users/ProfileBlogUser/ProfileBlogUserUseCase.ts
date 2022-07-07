@@ -24,7 +24,16 @@ class ProfileBlogUserUseCase {
 
     const user = await this.usersRepository.findUserByUserId(userId);
 
-    return BlogUserMap.toDTO(user);
+    if (user.githubId) {
+      return {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        avatarUrl: user.avatarUrl
+      };
+    } else {
+      return BlogUserMap.toDTO(user);
+    }
   }
 }
 

@@ -39,6 +39,8 @@ model BlogUser {
   comments Comment[]
   userTokens BlogUserToken[]
 
+  githubId String? @unique
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

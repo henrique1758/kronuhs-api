@@ -1,61 +1,66 @@
 import slugify from 'slugify';
 import { inject, injectable } from 'tsyringe';
+import TurnDownService from "turndown";
 import { AppError } from '../../../../errors/AppError';
+import { IStorageProvider } from '../../../../providers/StorageProvider/IStorageProvider';
 import { IPostsRepository } from '../../../../repositories/posts/IPostsRepository';
 
 interface IRequest {
   postId: string;
   userLoggedInId: string;
-  title: string;
-  subtitle: string;
-  content: string;
+  title?: string;
+  subtitle?: string;
+  content?: string;
   bannerUrl?: string;
   categoryId?: string;
 }
 
+const turndownService = new TurnDownService({
+  headingStyle: 'setext',
+  codeBlockStyle: 'indented',
+  fence: '```',
+  strongDelimiter: '**',
+  bulletListMarker: '*',
+  linkStyle: 'inlined'
+});
+
 @injectable()
 class UpdatePostUseCase {
   constructor(
-  @inject('PrismaPostsRepository')
-  private postsRepository: IPostsRepository
+    @inject("PrismaPostsRepository")
+    private postsRepository: IPostsRepository,
+    @inject("StorageProvider")
+    private storageProvider: IStorageProvider
   ) {}
 
   async execute({ postId, userLoggedInId, title, subtitle, content, bannerUrl, categoryId }: IRequest): Promise<void> {
     const postExists = await this.postsRepository.findByPostId(postId);
 
-    if (postExists?.authorId !== userLoggedInId) {
-      throw new AppError("Action Unauthorized!");
-    }
-
     if (!postExists) {
       throw new AppError("Post does not exists!");
     }
 
-    if (!title) {
-      throw new AppError("title is required!");
+    if (postExists.author.id !== userLoggedInId) {
+      throw new AppError("Action not permitted!");
     }
 
-    if (!subtitle) {
-      throw new AppError("subtitle is required!");
+    if (postExists.bannerUrl) {
+      await this.storageProvider.delete(postExists.bannerUrl, "postBanner");
     }
 
-    if (!content) {
-      throw new AppError("content is required!");
-    }
-
-    if (!bannerUrl) {
-      throw new AppError("bannerUrl is required!");
-    }
+    await this.storageProvider.save(bannerUrl, "postBanner");
 
     const slug = slugify(title, {
       lower: true
     });
 
+    const contentInMarkDown = turndownService.turndown(content);
+
     await this.postsRepository.update({
       id: postId,
       title,
       subtitle,
-      content,
+      content: contentInMarkDown,
       bannerUrl,
       slug,
       categoryId

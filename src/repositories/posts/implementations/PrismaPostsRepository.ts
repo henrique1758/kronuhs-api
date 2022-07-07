@@ -39,7 +39,8 @@ class PrismaPostsRepository implements IPostsRepository {
                 avatarUrl: true
               }
             },
-            content: true
+            content: true,
+            createdAt: true
           }
         },
         author: {
@@ -82,7 +83,57 @@ class PrismaPostsRepository implements IPostsRepository {
                 avatarUrl: true
               }
             },
-            content: true
+            content: true,
+            createdAt: true
+          }
+        },
+        author: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            avatarUrl: true,
+          }
+        },
+        category: {
+          select: {
+            name: true
+          }
+        },
+        _count: {
+          select: {
+            views: true,
+            likes: true,
+            comments: true
+          }
+        }
+      },
+    });
+
+    return post;
+  }
+
+  async findByPostSlug(slug: string): Promise<PostDataDTO> {
+    const post = await prisma.post.findFirst({
+      where: { slug },
+      include: {
+        comments: {
+          select: {
+            id: true,
+            user: {
+              select: {
+                name: true,
+                avatarUrl: true
+              }
+            },
+            content: true,
+            createdAt: true
+          }
+        },
+        likes: {
+          select: {
+            userId: true,
+            postId: true
           }
         },
         author: {
