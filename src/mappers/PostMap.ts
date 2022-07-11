@@ -14,7 +14,7 @@ class PostMap {
     likes,
     category,
     _count,
-    createdAt
+    createdAt,
   }: PostDataDTO) {
     return {
       id,
@@ -34,7 +34,7 @@ class PostMap {
           content: comment.content,
           author: {
             name: comment.user.name,
-            avatarUrl: `https://kronuhs.s3.sa-east-1.amazonaws.com/avatar/${comment.user.avatarUrl}`,
+            avatarUrl: comment.user.githubId ? comment.user.avatarUrl : `https://kronuhs.s3.sa-east-1.amazonaws.com/avatar/${comment.user.avatarUrl}`,
           },
           createdAt: comment.createdAt
         }

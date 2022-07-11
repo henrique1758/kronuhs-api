@@ -12,10 +12,8 @@ const sessionWithGithubController = new SessionWithGithubController();
 const refreshTokenController = new RefreshTokenController();
 
 // Github
-sessionBlogRoute.get("/github", (req, res) => {
-  return res.redirect(
-    `https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}`
-  )
+sessionBlogRoute.get("/github", (req, res) => {  
+  return res.redirect(`https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}`)
 });
 
 sessionBlogRoute.post("/auth-github", sessionWithGithubController.handle);

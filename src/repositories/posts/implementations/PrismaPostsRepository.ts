@@ -123,7 +123,8 @@ class PrismaPostsRepository implements IPostsRepository {
             user: {
               select: {
                 name: true,
-                avatarUrl: true
+                avatarUrl: true,
+                githubId: true
               }
             },
             content: true,

@@ -15,6 +15,12 @@ interface User {
   avatar_url: string;
 }
 
+interface IResponse {
+  token: string;
+  userData: User;
+  refresh_token: string;
+}
+
 @injectable()
 class SessionWithGithubUseCase {
   constructor(
@@ -54,6 +60,7 @@ class SessionWithGithubUseCase {
     }
 
     const userData = {
+      id: user.id,
       name: user.name,
       email: user.email,
       avatar_url: user.avatarUrl
@@ -64,7 +71,23 @@ class SessionWithGithubUseCase {
       expiresIn: authConfig.TOKEN_EXPIRES_IN
     });
 
-    return { token, userData };
+    const refresh_token = sign({ email }, authConfig.BLOG_REFRESH_SECRET, {
+      subject: user.id,
+      expiresIn: authConfig.REFRESH_TOKEN_EXPIRES_IN
+    });
+
+    const authResult: IResponse = {
+      token,
+      userData: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        avatar_url: user.avatarUrl
+      },
+      refresh_token
+    };
+
+    return authResult;
   }
 }
 export { SessionWithGithubUseCase };

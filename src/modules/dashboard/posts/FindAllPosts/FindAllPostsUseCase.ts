@@ -1,8 +1,11 @@
 import { inject, injectable } from "tsyringe";
-import { PostDataDTO } from "../../../../dtos/post/PostDataDTO";
 import { PostCardMap } from "../../../../mappers/PostCardMap";
-import { PostMap } from "../../../../mappers/PostMap";
 import { IPostsRepository } from "../../../../repositories/posts/IPostsRepository";
+
+interface IRequest {
+  page: number;
+  per_page: number;
+}
 
 @injectable()
 class FindAllPostsUseCase {
@@ -11,12 +14,22 @@ class FindAllPostsUseCase {
     private postsRepository: IPostsRepository
   ) {}
 
-  async execute() {
+  async execute({ page, per_page }: IRequest) {
     const response = await this.postsRepository.findAll();
 
-    const posts = response.map(post => PostCardMap.toDto(post));
+    const total = response.length;
 
-    return posts;
+    const pageStart = (page - 1) * per_page;
+    const pageEnd = pageStart + per_page;
+
+    const posts = response.slice(pageStart, pageEnd);
+
+    const postsResponse = posts.map(post => PostCardMap.toDto(post));
+
+    return {
+      postsResponse,
+      total
+    };
   }
 }
 export { FindAllPostsUseCase };

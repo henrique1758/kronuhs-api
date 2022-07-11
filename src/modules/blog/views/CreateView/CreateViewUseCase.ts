@@ -29,7 +29,7 @@ class CreateViewUseCase {
       postId
     });
 
-    if (!viewAlreadyExists) {
+    if (viewAlreadyExists) {
       return;
     }
 

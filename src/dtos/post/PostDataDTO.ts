@@ -9,6 +9,7 @@ interface PostDataDTO {
   comments?: {
     content: string;
     user: {
+      githubId?: string;
       name: string;
       avatarUrl: string;
     },
