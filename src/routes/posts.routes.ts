@@ -8,6 +8,8 @@ import {
 } from "../modules/dashboard/posts/CreatePost/CreatePostController";
 import { DeletePostController } from "../modules/dashboard/posts/DeletePost/DeletePostController";
 import { FindAllPostsController } from "../modules/dashboard/posts/FindAllPosts/FindAllPostsController";
+import { FindAllPostsByCategoryController } from "../modules/dashboard/posts/FindAllPostsByCategory/FindAllPostsByCategoryController";
+import { FindPostByIdController } from "../modules/dashboard/posts/FindPostById/FindPostByIdController";
 import { FindPostBySlugController } from "../modules/dashboard/posts/FindPostBySlug/FindPostBySlugController";
 import { UpdateIsDraftPostController } from "../modules/dashboard/posts/UpdateIsDraftPost/UpdateIsDraftPostController";
 import { UpdatePostController } from "../modules/dashboard/posts/UpdatePost/UpdatePostController";
@@ -15,7 +17,9 @@ import { UpdatePostController } from "../modules/dashboard/posts/UpdatePost/Upda
 const postRoute = Router();
 
 const findAllPostsController = new FindAllPostsController();
+const findAllPostsByCategoryController = new FindAllPostsByCategoryController();
 const findPostBySlugController = new FindPostBySlugController();
+const findPostByIdController = new FindPostByIdController();
 const createPostController = new CreatePostController();
 const updatePostController = new UpdatePostController();
 const updateIsDraftPostController = new UpdateIsDraftPostController();
@@ -25,7 +29,11 @@ const upload = multer(uploadConfig);
 
 postRoute.get("/", findAllPostsController.handle);
 
+postRoute.get("/:category", findAllPostsByCategoryController.handle);
+
 postRoute.get("/:slug", findPostBySlugController.handle);
+
+postRoute.get("/:id", findPostByIdController.handle);
 
 postRoute.post(
 "/",

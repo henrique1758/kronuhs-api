@@ -2,7 +2,9 @@ import slugify from "slugify";
 import { inject, injectable } from "tsyringe";
 import TurnDownService from "turndown";
 import { AppError } from "../../../../errors/AppError";
+import { IMailProvider } from "../../../../providers/MailProvider/IMailProvider";
 import { IStorageProvider } from "../../../../providers/StorageProvider/IStorageProvider";
+import { INewsletterRepository } from "../../../../repositories/newsletter/INewsletterRepository";
 import { IPostsRepository } from "../../../../repositories/posts/IPostsRepository";
 
 interface IRequest {
@@ -29,7 +31,11 @@ class CreatePostUseCase {
     @inject("PrismaPostsRepository")
     private postsRepository: IPostsRepository,
     @inject("StorageProvider")
-    private storageProvider: IStorageProvider
+    private storageProvider: IStorageProvider,
+    @inject("EtherealMailProvider")
+    private mailProvider: IMailProvider,
+    @inject("PrismaNewsletterRepository")
+    private newsletterRepository: INewsletterRepository
   ) {}
 
   async execute({ 
@@ -79,6 +85,8 @@ class CreatePostUseCase {
       authorId,
       categoryId
     });
+
+    // const newsletterSubscribers = await this.newsletterRepository.findAllSubscribers();
   }
 }
 export { CreatePostUseCase };

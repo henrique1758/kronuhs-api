@@ -18,11 +18,11 @@ class PostCardMap {
       title,
       content,
       isDraft,
-      bannerUrl: `https://kronuhs.s3.sa-east-1.amazonaws.com/postBanner/${bannerUrl}`,
+      bannerUrl: `${process.env.AWS_S3_BASE_URL}/postBanner/${bannerUrl}`,
       slug,
       author: {
         firstName: author.firstName,
-        avatarUrl: `https://kronuhs.s3.sa-east-1.amazonaws.com/avatar/${author.avatarUrl}`
+        avatarUrl: `${process.env.AWS_S3_BASE_URL}/avatar/${author.avatarUrl}`
       },
       category: {
         name: category.name

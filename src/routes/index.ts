@@ -2,6 +2,7 @@ import { Router } from "express";
 import { categoryRoutes } from "./categories.dashboard.routes";
 import { commentsRoutes } from "./comments.blog.routes";
 import { likesRoutes } from "./likes.blog.routes";
+import { newsletterRoutes } from "./newsletter.blog.routes";
 import { passwordDashboardRoutes } from "./password.dashboard.routes";
 import { postsRoutes } from "./posts.routes";
 import { roleDashboardRoutes } from "./roles.dashboard.routes";
@@ -18,6 +19,7 @@ router.use("/blog/session", sessionBlogRoutes);
 router.use("/blog/views", viewsRoutes);
 router.use("/blog/comments", commentsRoutes);
 router.use("/blog/likes", likesRoutes);
+router.use("/blog/newsletter", newsletterRoutes);
 
 router.use("/posts", postsRoutes);
 

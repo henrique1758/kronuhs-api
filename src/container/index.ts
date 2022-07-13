@@ -20,6 +20,8 @@ import { IDashboardUserTokensRepository } from "../repositories/dashboardUserTok
 import { PrismaDashboardUserTokensRepository } from "../repositories/dashboardUserTokens/implementations/PrismaDashboardUserTokensRepository";
 import { ILikesRepository } from "../repositories/likes/ILikesRepository";
 import { PrismaLikesRepository } from "../repositories/likes/implementations/PrismaLikesRepository";
+import { PrismaNewsletterRepository } from "../repositories/newsletter/Implementations/PrismaNewsletterRepository";
+import { INewsletterRepository } from "../repositories/newsletter/INewsletterRepository";
 import { PrismaPostsRepository } from "../repositories/posts/implementations/PrismaPostsRepository";
 import { IPostsRepository } from "../repositories/posts/IPostsRepository";
 import { PrismaRolesRepository } from "../repositories/roles/implementations/PrismaRolesRepository";
@@ -95,4 +97,9 @@ const diskStorage = {
 container.registerSingleton<IStorageProvider>(
   "StorageProvider",
   diskStorage[process.env.disk]
+);
+
+container.registerSingleton<INewsletterRepository>(
+  "PrismaNewsletterRepository",
+  PrismaNewsletterRepository
 );

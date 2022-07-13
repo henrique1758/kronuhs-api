@@ -71,6 +71,54 @@ class PrismaPostsRepository implements IPostsRepository {
     return posts;
   }
 
+  async findAllByCategory(categoryName: string): Promise<PostDataDTO[]> {
+    const posts = await prisma.post.findMany({
+      where: {
+        category: {
+          name: categoryName
+        }
+      },
+      include: {
+        comments: {
+          select: {
+            user: {
+              select: {
+                name: true,
+                avatarUrl: true
+              }
+            },
+            content: true,
+            createdAt: true
+          }
+        },
+        author: {
+          select: {
+            firstName: true,
+            lastName: true,
+            avatarUrl: true,
+          }
+        },
+        category: {
+          select: {
+            name: true
+          }
+        },
+        _count: {
+          select: {
+            views: true,
+            likes: true,
+            comments: true
+          }
+        }
+      },
+      orderBy: {
+        createdAt: "desc"
+      }
+    });
+
+    return posts
+  }
+
   async findByPostId(postId: string): Promise<PostDataDTO | null> {
     const post = await prisma.post.findFirst({
       where: { id: postId },

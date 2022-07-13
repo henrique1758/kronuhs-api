@@ -8,6 +8,7 @@ interface BlogUserData {
   name: string;
   email: string;
   avatarUrl: string;
+  githubId?: string;
 }
 
 @injectable()
@@ -29,7 +30,8 @@ class ProfileBlogUserUseCase {
         id: user.id,
         name: user.name,
         email: user.email,
-        avatarUrl: user.avatarUrl
+        avatarUrl: user.avatarUrl,
+        githubId: user.githubId
       };
     } else {
       return BlogUserMap.toDTO(user);

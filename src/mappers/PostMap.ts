@@ -22,19 +22,19 @@ class PostMap {
       subtitle,
       content,
       isDraft,
-      bannerUrl: `https://kronuhs.s3.sa-east-1.amazonaws.com/postBanner/${bannerUrl}`,
+      bannerUrl: `${process.env.AWS_S3_BASE_URL}/postBanner/${bannerUrl}`,
       slug,
       author: {
         firstName: author.firstName,
         lastName: author.lastName,
-        avatarUrl: `https://kronuhs.s3.sa-east-1.amazonaws.com/avatar/${author.avatarUrl}`,
+        avatarUrl: `${process.env.AWS_S3_BASE_URL}/avatar/${author.avatarUrl}`,
       },
       comments: comments.map(comment => {
         return {
           content: comment.content,
           author: {
             name: comment.user.name,
-            avatarUrl: comment.user.githubId ? comment.user.avatarUrl : `https://kronuhs.s3.sa-east-1.amazonaws.com/avatar/${comment.user.avatarUrl}`,
+            avatarUrl: comment.user.githubId ? comment.user.avatarUrl : `${process.env.AWS_S3_BASE_URL}/avatar/${comment.user.avatarUrl}`,
           },
           createdAt: comment.createdAt
         }

@@ -14,7 +14,7 @@ class UserMap {
       firstName,
       lastName,
       email,
-      avatarUrl: `https://kronuhs.s3.sa-east-1.amazonaws.com/avatar/${avatarUrl}`,
+      avatarUrl: `${process.env.AWS_S3_BASE_URL}/avatar/${avatarUrl}`,
       createdAt
     }
   }

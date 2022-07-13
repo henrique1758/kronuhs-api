@@ -168,3 +168,13 @@ model BlogUserToken {
 
   @@map("user_tokens")
 }
+
+model NewsletterSubscriber {
+  id String @id @default(uuid())
+
+  email String
+
+  created_at DateTime @default(now())
+
+  @@map("newsletter_subscriber")
+}

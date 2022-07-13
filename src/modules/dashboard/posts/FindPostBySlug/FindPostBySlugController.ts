@@ -8,7 +8,7 @@ class FindPostBySlugController {
 
     const findPostBySlugUseCase = container.resolve(FindPostBySlugUseCase);
 
-    const result = await findPostBySlugUseCase.execute(slug);
+    const result = await findPostBySlugUseCase.execute(slug);    
 
     return res.json(result);
   }
