@@ -6,6 +6,7 @@ interface ILikesRepository {
   findAll(postId: string): Promise<LikeDataDTO[]>;
   findByUserId(userId: string): Promise<LikeDataDTO[] | null>;
   delete(postId: string): Promise<void>;
+  count(): Promise<number>;
 }
 
 export { ILikesRepository };

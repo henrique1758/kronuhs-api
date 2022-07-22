@@ -11,6 +11,7 @@ interface IBlogUsersRepository {
   updateAvatarUser(data: IUpdateBlogUserAvatarDTO): Promise<void>;
   updatePassword(data: IUpdatePasswordDTO): Promise<void>;
   delete(userId: string): Promise<void>;
+  count(): Promise<number>;
 }
 
 export { IBlogUsersRepository };

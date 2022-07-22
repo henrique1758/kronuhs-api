@@ -40,6 +40,12 @@ class PrismaLikesRepository implements ILikesRepository {
       }
     });
   }
+
+  async count(): Promise<number> {
+    const likesCount = await prisma.view.count();
+
+    return likesCount
+  }
 }
 
 export { PrismaLikesRepository };

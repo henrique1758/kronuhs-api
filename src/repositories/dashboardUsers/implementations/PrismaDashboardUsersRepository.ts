@@ -20,6 +20,13 @@ class PrismaDashboardUsersRepository implements IDashboardUsersRepository {
             id: roleId
           }
         }
+      },
+      include: {
+        roles: {
+          select: {
+            name: true
+          }
+        }
       }
     });
 
@@ -27,14 +34,29 @@ class PrismaDashboardUsersRepository implements IDashboardUsersRepository {
   }
 
   async findAll(): Promise<DashboardUserDataDTO[]> {
-    const users = await prisma.dashboardUser.findMany();
+    const users = await prisma.dashboardUser.findMany({
+      include: {
+        roles: {
+          select: {
+            name: true
+          }
+        }
+      }
+    });
 
     return users;
   }
 
   async findUserByEmail(email: string): Promise<DashboardUserDataDTO | null> {
     const user = await prisma.dashboardUser.findFirst({
-      where: { email }
+      where: { email },
+      include: {
+        roles: {
+          select: {
+            name: true
+          }
+        }
+      }
     });
 
     return user;
@@ -44,7 +66,11 @@ class PrismaDashboardUsersRepository implements IDashboardUsersRepository {
     const user = await prisma.dashboardUser.findFirst({
       where: { id: userId },
       include: {
-        roles: true
+        roles: {
+          select: {
+            name: true
+          }
+        }
       }
     });
 

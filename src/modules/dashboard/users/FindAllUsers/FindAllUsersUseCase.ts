@@ -5,7 +5,7 @@ import { IDashboardUsersRepository } from "../../../../repositories/dashboardUse
 @injectable()
 class FindAllUsersUseCase {
   constructor(
-  @inject("PrismaUsersRepository")
+  @inject("PrismaDashboardUsersRepository")
   private usersRepository: IDashboardUsersRepository
   ) {}
 

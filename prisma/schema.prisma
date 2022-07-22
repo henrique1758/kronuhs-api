@@ -52,8 +52,9 @@ model Role {
 
   name String @unique
 
-  user   DashboardUser?   @relation(fields: [userId], references: [id])
-  userId String?
+  // user   DashboardUser?   @relation(fields: [userId], references: [id])
+  // userId String?
+  users DashboardUser[]
 
   createdAt DateTime @default(now())
 

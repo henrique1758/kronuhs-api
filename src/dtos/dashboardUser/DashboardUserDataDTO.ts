@@ -5,6 +5,9 @@ interface DashboardUserDataDTO {
   email: string;
   password: string;
   avatarUrl: string | null;
+  roles: {
+    name: string;
+  }[];
   createdAt: Date;
   updatedAt: Date;
 }

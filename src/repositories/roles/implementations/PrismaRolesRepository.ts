@@ -18,6 +18,12 @@ class PrismaRolesRepository implements IRolesRepository {
 
     return role;
   }
+
+  async findAll(): Promise<RoleDataDTO[]> {
+    const roles = await prisma.role.findMany();
+
+    return roles;
+  }
 }
 
 export { PrismaRolesRepository };

@@ -29,11 +29,11 @@ const upload = multer(uploadConfig);
 
 postRoute.get("/", findAllPostsController.handle);
 
-postRoute.get("/:category", findAllPostsByCategoryController.handle);
+postRoute.get("/post-by-category/:category", findAllPostsByCategoryController.handle);
 
-postRoute.get("/:slug", findPostBySlugController.handle);
+postRoute.get("/post-by-slug/:slug", findPostBySlugController.handle);
 
-postRoute.get("/:id", findPostByIdController.handle);
+postRoute.get("/post-by-id/:id", findPostByIdController.handle);
 
 postRoute.post(
 "/",

@@ -93,6 +93,12 @@ class PrismaBlogUsersRepository implements IBlogUsersRepository {
       }
     });
   }
+
+  async count(): Promise<number> {
+    const blogUsersCount = await prisma.blogUser.count();
+
+    return blogUsersCount
+  }
 }
 
 export { PrismaBlogUsersRepository };

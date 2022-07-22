@@ -12,6 +12,7 @@ interface IPostsRepository {
   update(data: IUpdatePostDTO): Promise<void>;
   updateIsDraft(data: IUpdateIsDraftPostDTO): Promise<void>;
   delete(postId: string): Promise<void>;
+  count(): Promise<number>;
 }
 
 export { IPostsRepository };

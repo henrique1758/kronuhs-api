@@ -242,6 +242,12 @@ class PrismaPostsRepository implements IPostsRepository {
       where: { id: postId }
     });
   }
+
+  async count(): Promise<number> {
+    const postsCount = await prisma.post.count();
+
+    return postsCount
+  }
 }
 
 export { PrismaPostsRepository };

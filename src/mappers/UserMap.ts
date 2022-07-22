@@ -8,6 +8,7 @@ class UserMap {
     email,
     avatarUrl,
     createdAt,
+    roles,
   }: DashboardUserDataDTO) {
     return {
       id,
@@ -15,6 +16,7 @@ class UserMap {
       lastName,
       email,
       avatarUrl: `${process.env.AWS_S3_BASE_URL}/avatar/${avatarUrl}`,
+      roles,
       createdAt
     }
   }

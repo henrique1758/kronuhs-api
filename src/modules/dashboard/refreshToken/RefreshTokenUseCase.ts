@@ -10,6 +10,11 @@ interface IPayload {
   email: string;
 }
 
+type IResponse = {
+  newToken: string;
+  newRefreshToken: string;
+}
+
 @injectable()
 class RefreshTokenUseCase {
   constructor(
@@ -19,14 +24,14 @@ class RefreshTokenUseCase {
     private dateProvider: IDateProvider
   ) {}
 
-  async execute(token: string): Promise<string> {
-    const { email, sub } = verify(token, authConfig.DASHBOARD_REFRESH_SECRET) as IPayload;
+  async execute(refreshToken: string): Promise<IResponse> {
+    const { email, sub } = verify(refreshToken, authConfig.DASHBOARD_REFRESH_SECRET) as IPayload;
 
     const userId = sub;
 
     const userToken = await this.userTokensRepository.findByUserIdAndRefreshToken(
       userId,
-      token
+      refreshToken
     );
 
     if (!userToken) {
@@ -35,18 +40,26 @@ class RefreshTokenUseCase {
 
     await this.userTokensRepository.deleteById(userToken.id);
 
-    const refresh_token = sign({ email }, authConfig.DASHBOARD_REFRESH_SECRET, {
+    const newToken = sign({}, authConfig.DASHBOARD_SECRET_KEY, {
+      subject: userId,
+      expiresIn: authConfig.TOKEN_EXPIRES_IN
+    });
+
+    const newRefreshToken = sign({ email }, authConfig.DASHBOARD_REFRESH_SECRET, {
       subject: userId,
       expiresIn: authConfig.REFRESH_TOKEN_EXPIRES_IN
-    });
+    });    
 
     await this.userTokensRepository.create({
       userId,
-      refresh_token, 
+      refresh_token: newRefreshToken, 
       expires_date: this.dateProvider.addDays(authConfig.EXPIRES_DAYS_REFRESH_TOKEN),
     });
 
-    return refresh_token;
+    return {
+      newToken,
+      newRefreshToken
+    };
   }
 }
 export { RefreshTokenUseCase };

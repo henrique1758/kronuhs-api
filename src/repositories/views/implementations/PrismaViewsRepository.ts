@@ -35,6 +35,12 @@ class PrismaViewsRepository implements IViewsRepository {
 
     return view;
   }
+
+  async count(): Promise<number> {
+    const viewsCount = await prisma.view.count();
+
+    return viewsCount
+  }
 }
 
 export { PrismaViewsRepository };

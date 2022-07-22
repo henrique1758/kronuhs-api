@@ -20,6 +20,9 @@ interface IResponse {
     lastName: string;
     email: string;
     avatarUrl: string;
+    roles: {
+      name: string;
+    }[];
     created_at: Date;
   };
   refresh_token: string;
@@ -49,7 +52,9 @@ class SessionUseCase {
       throw new AppError("Email or password incorrect!");
     };
 
-    const token = sign({}, authConfig.DASHBOARD_SECRET_KEY, {
+    const token = sign({
+      roles: user.roles
+    }, authConfig.DASHBOARD_SECRET_KEY, {
       subject: user.id,
       expiresIn: authConfig.TOKEN_EXPIRES_IN
     });
@@ -72,8 +77,9 @@ class SessionUseCase {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        avatarUrl: user.avatarUrl,
-        created_at: user.createdAt
+        avatarUrl: `${process.env.AWS_S3_BASE_URL}/${user.avatarUrl}`,
+        created_at: user.createdAt,
+        roles: user.roles
       },
       refresh_token
     };

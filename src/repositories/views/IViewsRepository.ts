@@ -6,6 +6,7 @@ interface IViewsRepository {
   create(data: ICreateViewDTO): Promise<void>;
   findAll(postId: string): Promise<ViewDataDTO[]>;
   findByIpAndPostId(data: IFindPostRequest): Promise<ViewDataDTO | null>;
+  count(): Promise<number>;
 }
 
 export { IViewsRepository };
